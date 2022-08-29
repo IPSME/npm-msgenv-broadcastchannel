@@ -14,8 +14,6 @@ function uuidv4() {
 //-------------------------------------------------------------------------------------------------
 // MsgEnv:
 
-const bc= new BroadcastChannel('');
-
 function subscribe(handler) {
     if (handler.broadcastChannel !== undefined)
         return;
@@ -31,10 +29,11 @@ function unsubscribe(handler) {
     delete handler.broadcastChannel;
 }
 
+const bc= new BroadcastChannel('');
+
 function publish(msg) {
 	bc.postMessage(msg);
 }
-
 
 //-------------------------------------------------------------------------------------------------
 
