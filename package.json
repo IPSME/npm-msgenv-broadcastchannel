@@ -1,0 +1,24 @@
+{
+  "name": "@ipsme/msgenv-broadcastchannel",
+  "version": "0.0.2",
+  "description": "",
+  "main": "ipsme_msgenv.js",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/IPSME/npm-msgenv-broadcastchannel.git"
+  },
+  "keywords": [
+    "ipsme",
+    "metaverse",
+    "interoperability"
+  ],
+  "author": "K.Nevelsteen, PhD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IPSME/npm-msgenv-broadcastchannel/issues"
+  },
+  "homepage": "https://github.com/IPSME/npm-msgenv-broadcastchannel#readme"
+}
