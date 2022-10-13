@@ -26,6 +26,7 @@ function subscribe(handler) {
 }
 
 function unsubscribe(handler) {
+    handler.broadcastChannel.close();
     delete handler.broadcastChannel;
 }
 
