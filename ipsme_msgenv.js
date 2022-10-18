@@ -18,7 +18,7 @@ function subscribe(handler) {
     if (handler.broadcastChannel !== undefined)
         return;
     console.log('MsgEnv: subscribe');
-    handler.broadcastChannel= new BroadcastChannel('');
+    handler.broadcastChannel= new BroadcastChannel('IPSME');
     handler.broadcastChannel.onmessage= function(event) {
         // console.log('msgenv_BroadcastChannel.onmessage: ', event.data);
         this(event.data);
@@ -30,7 +30,7 @@ function unsubscribe(handler) {
     delete handler.broadcastChannel;
 }
 
-const bc= new BroadcastChannel('');
+const bc= new BroadcastChannel('IPSME');
 
 function publish(msg) {
 	bc.postMessage(msg);
