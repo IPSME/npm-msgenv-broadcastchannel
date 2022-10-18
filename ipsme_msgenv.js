@@ -36,9 +36,11 @@ var config= (function() {
 //-------------------------------------------------------------------------------------------------
 // MsgEnv:
 
-function subscribe(handler) {
+function subscribe(handler, prefix= undefined) {
     if (handler.broadcastChannel !== undefined)
         return;
+    if (prefix !== undefined) 
+        config.prefix= prefix;
     if (config.log&CXN) console.log(config.prefix +'MsgEnv: subscribe');
     handler.broadcastChannel= new BroadcastChannel('IPSME');
     handler.broadcastChannel.onmessage= function(event) {
