@@ -12,20 +12,44 @@ function uuidv4() {
 // console.log(uuidv4());
 */
 //-------------------------------------------------------------------------------------------------
+
+const CXN= 0b1 << 0;	// operations
+const RDR= 0b1 << 1;	// redirect
+
+var config= (function() {
+    let _prefix= '';
+    let _log= 0;
+
+    return {
+        get prefix() { return _prefix; },
+        set prefix(prefix) {
+            _prefix= prefix;
+        },
+
+        get log() { return _log; },
+        set log(log) {
+            _log= log;
+        }
+    }
+})();
+
+//-------------------------------------------------------------------------------------------------
 // MsgEnv:
 
 function subscribe(handler) {
     if (handler.broadcastChannel !== undefined)
         return;
-    console.log('MsgEnv: subscribe');
+    if (config.log&CXN) console.log(config.prefix +'MsgEnv: subscribe');
     handler.broadcastChannel= new BroadcastChannel('IPSME');
     handler.broadcastChannel.onmessage= function(event) {
-        // console.log('msgenv_BroadcastChannel.onmessage: ', event.data);
-        this(event.data);
+        const msg= event.data;
+        if (config.log&RDR) console.log(config.prefix +'MsgEnv: msg <- bc: ', msg);
+        this(msg);
     }.bind(handler);
 }
 
 function unsubscribe(handler) {
+    if (config.log&CXN) console.log(config.prefix +'MsgEnv: unsubscribe');
     handler.broadcastChannel.close();
     delete handler.broadcastChannel;
 }
@@ -33,9 +57,10 @@ function unsubscribe(handler) {
 const bc= new BroadcastChannel('IPSME');
 
 function publish(msg) {
+    if (config.log&RDR) console.log(config.prefix +'MsgEnv: msg -> bc: ', msg);
 	bc.postMessage(msg);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-export { subscribe, unsubscribe, publish };
+export { config, subscribe, unsubscribe, publish };
