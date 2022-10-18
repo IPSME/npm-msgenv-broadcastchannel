@@ -1,6 +1,6 @@
 
 //-------------------------------------------------------------------------------------------------
-
+/*
 // https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
 //
 function uuidv4() {
@@ -10,7 +10,7 @@ function uuidv4() {
 }
   
 // console.log(uuidv4());
-
+*/
 //-------------------------------------------------------------------------------------------------
 // MsgEnv:
 
@@ -38,4 +38,4 @@ function publish(msg) {
 
 //-------------------------------------------------------------------------------------------------
 
-export { uuidv4, subscribe, unsubscribe, publish };
+export { subscribe, unsubscribe, publish };
