@@ -41,7 +41,7 @@ function subscribe(handler, options= undefined) {
         return;
     if (options !== undefined) 
         cfg_.options= options;
-    if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: subscribe: new bc()');
+    if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: subscribe');
     handler.broadcastChannel= new BroadcastChannel('IPSME');
     handler.broadcastChannel.onmessage= function(event) {
         const msg= event.data;
@@ -51,7 +51,7 @@ function subscribe(handler, options= undefined) {
 }
 
 function unsubscribe(handler) {
-    if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: unsubscribe: bc.close()');
+    if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: unsubscribe');
     handler.broadcastChannel.close();
     delete handler.broadcastChannel;
 }
