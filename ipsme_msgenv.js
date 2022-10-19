@@ -16,19 +16,19 @@ function uuidv4() {
 const CXN= 0b1 << 0;	// operations
 const RDR= 0b1 << 1;	// redirect
 
-var config= (function() {
+var cfg_= (function() {
     let _prefix= '';
-    let _log= 0;
+    let _logr= 0;
 
     return {
         get prefix() { return _prefix; },
-        set prefix(prefix) {
-            _prefix= prefix;
+        set prefix(str) {
+            _prefix= str;
         },
 
-        get log() { return _log; },
-        set log(log) {
-            _log= log;
+        get logr() { return _logr; },
+        set logr(nr) {
+            _logr= nr;
         }
     }
 })();
@@ -40,18 +40,18 @@ function subscribe(handler, prefix= undefined) {
     if (handler.broadcastChannel !== undefined)
         return;
     if (prefix !== undefined) 
-        config.prefix= prefix;
-    if (config.log&CXN) console.log(config.prefix +'MsgEnv: subscribe');
+        cfg_.prefix= prefix;
+    if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: subscribe: new bc()');
     handler.broadcastChannel= new BroadcastChannel('IPSME');
     handler.broadcastChannel.onmessage= function(event) {
         const msg= event.data;
-        if (config.log&RDR) console.log(config.prefix +'MsgEnv: msg <- bc: ', msg);
+        if (cfg_.logr&RDR) console.log(cfg_.prefix +'MsgEnv: bc.onmessage: ', msg);
         this(msg);
     }.bind(handler);
 }
 
 function unsubscribe(handler) {
-    if (config.log&CXN) console.log(config.prefix +'MsgEnv: unsubscribe');
+    if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: unsubscribe: bc.close()');
     handler.broadcastChannel.close();
     delete handler.broadcastChannel;
 }
@@ -59,10 +59,10 @@ function unsubscribe(handler) {
 const bc= new BroadcastChannel('IPSME');
 
 function publish(msg) {
-    if (config.log&RDR) console.log(config.prefix +'MsgEnv: msg -> bc: ', msg);
+    if (cfg_.logr&RDR) console.log(cfg_.prefix +'MsgEnv: bc.postMessage: ', msg);
 	bc.postMessage(msg);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-export { config, subscribe, unsubscribe, publish };
+export { cfg_ as config, subscribe, unsubscribe, publish };
