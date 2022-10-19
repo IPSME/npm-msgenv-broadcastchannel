@@ -39,7 +39,7 @@ var cfg_= (function() {
 function subscribe(handler, options= undefined) {
     if (handler.broadcastChannel !== undefined)
         return;
-    if (prefix !== undefined) 
+    if (options !== undefined) 
         cfg_.options= options;
     if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: subscribe: new bc()');
     handler.broadcastChannel= new BroadcastChannel('IPSME');
