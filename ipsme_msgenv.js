@@ -13,34 +13,34 @@ function uuidv4() {
 */
 //-------------------------------------------------------------------------------------------------
 
-const CXN= 0b1 << 0;	// operations
+const CXN= 0b1 << 0;	// connections
 const RDR= 0b1 << 1;	// redirect
 
 var cfg_= (function() {
-    let _prefix= '';
-    let _logr= 0;
+    let _options= {};
 
     return {
-        get prefix() { return _prefix; },
-        set prefix(str) {
-            _prefix= str;
+        get prefix() { 
+			return (_options.prefix === undefined) ? '' : _options.prefix;
         },
-
-        get logr() { return _logr; },
-        set logr(nr) {
-            _logr= nr;
-        }
+        get logr() {
+            return (_options.logr === undefined) ? 0 : _options.logr;
+        },
+		get options() { return _options; },
+		set options(obj) {
+			_options= obj;
+		}
     }
 })();
 
 //-------------------------------------------------------------------------------------------------
 // MsgEnv:
 
-function subscribe(handler, prefix= undefined) {
+function subscribe(handler, options= undefined) {
     if (handler.broadcastChannel !== undefined)
         return;
     if (prefix !== undefined) 
-        cfg_.prefix= prefix;
+        cfg_.options= options;
     if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: subscribe: new bc()');
     handler.broadcastChannel= new BroadcastChannel('IPSME');
     handler.broadcastChannel.onmessage= function(event) {
