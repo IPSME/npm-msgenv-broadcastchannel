@@ -16,10 +16,19 @@ function uuidv4() {
 const CXN= 0b1 << 0;	// connections
 const RDR= 0b1 << 1;	// redirect
 
+// options= {
+//  channel : 'IPSME',
+// 	prefix : '',
+// 	logr : 0
+// }
+
 var cfg_= (function() {
     let _options= {};
 
     return {
+        get channel() {
+			return (_options.channel === undefined) ? 'IPSME' : _options.channel;
+        },
         get prefix() { 
 			return (_options.prefix === undefined) ? '' : _options.prefix;
         },
@@ -36,13 +45,11 @@ var cfg_= (function() {
 //-------------------------------------------------------------------------------------------------
 // MsgEnv:
 
-function subscribe(handler, options= undefined) {
+function subscribe(handler) {
     if (handler.broadcastChannel !== undefined)
         return;
-    if (options !== undefined) 
-        cfg_.options= options;
     if (cfg_.logr&CXN) console.log(cfg_.prefix +'MsgEnv: subscribe');
-    handler.broadcastChannel= new BroadcastChannel('IPSME');
+    handler.broadcastChannel= new BroadcastChannel(cfg_.channel);
     handler.broadcastChannel.onmessage= function(event) {
         const msg= event.data;
         if (cfg_.logr&RDR) console.log(cfg_.prefix +'MsgEnv: bc.onmessage: ', msg);
@@ -56,11 +63,15 @@ function unsubscribe(handler) {
     delete handler.broadcastChannel;
 }
 
-const bc= new BroadcastChannel('IPSME');
+var bc_= undefined;
 
 function publish(msg) {
+    "use strict";
+    if (! bc_)
+        bc_= new BroadcastChannel(cfg_.channel);
+
     if (cfg_.logr&RDR) console.log(cfg_.prefix +'MsgEnv: bc.postMessage: ', msg);
-	bc.postMessage(msg);
+    bc_.postMessage(msg);
 }
 
 //-------------------------------------------------------------------------------------------------
