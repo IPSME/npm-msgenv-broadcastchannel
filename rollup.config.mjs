@@ -13,7 +13,7 @@ export default [
 	// 	// plugins: [resolve()]
 	// },
 	{
-		input: 'src/ipsme_msgenv.js',
+		input: 'src/ipsme_msgenv.mjs',
 		output: {
 			name: "ipsme_msgenv",
 			file: 'dist/ipsme_msgenv.es.mjs',
