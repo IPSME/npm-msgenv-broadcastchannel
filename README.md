@@ -10,7 +10,12 @@ This library contains the wrapper code for sending messages to a web messaging e
 ```
 function ipsme_handler_(msg) {
 	console.log('ipsme_handler_: msg: ', msg);
-	// add handlers here ...
+	try {
+		// add handlers ...	
+	}
+	catch(e) {
+		// ...
+	}
 	console.log("ipsme_handler_: DROP! msg: ", msg);
 }
 
