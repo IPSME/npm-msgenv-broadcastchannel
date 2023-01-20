@@ -25,6 +25,8 @@ var cfg_= (function() {
     //     logr : ...
     // }
 
+    //TODO: prefix could be logr.prefix instead
+
     return {
         get channel() {
 			return (_options.channel === undefined) ? 'IPSME' : _options.channel;
@@ -52,7 +54,8 @@ function subscribe(handler) {
     handler.broadcastChannel.onmessage= function(event) {
         const msg= event.data;
         LOGR_.log(l_.REFL, cfg_.prefix +'MsgEnv: bc.onmessage: ', msg);
-        this(msg);
+        try { this(msg) }
+        catch (e) { console.assert(false); }
     }.bind(handler);
 }
 
