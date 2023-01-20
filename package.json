@@ -19,7 +19,7 @@
     "interoperability"
   ],
   "author": "K.Nevelsteen, PhD",
-  "license": "ISC",
+  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/IPSME/npm-msgenv-broadcastchannel/issues"
   },
