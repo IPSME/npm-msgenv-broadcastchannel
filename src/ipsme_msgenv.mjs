@@ -1,14 +1,13 @@
 
-import { BitLogr } from '@knev/bitlogr';
-
-let LOGR_= new BitLogr();
+import { LOGR } from '@knev/bitlogr';
 
 const l_ = {
-	MsgEnv : 0b1 << 0,	// MsgEnv
-	CXNS : 0b1 << 1,	// connections
-	REFL : 0b1 << 2,	// reflection
+    CONNECTIONS : 0b1 << 1,	// connections
+	REFLECTION : 0b1 << 2,	// reflection
 }
-LOGR_.labels= l_;
+
+const LOGR_= LOGR.get_instance();
+const logr_= LOGR_.create({ labels: l_ });
 
 // https://stackoverflow.com/questions/4602141/variable-name-as-a-string-in-javascript
 const __name = obj => Object.keys(obj)[0];
@@ -37,8 +36,8 @@ var cfg_= (function() {
 		get options() { return _options; },
 		set options(obj) {
 			_options= obj;
-            if (_options.logr && _options.logr[ __name(l_) ] )
-			    LOGR_.toggled= _options.logr
+            // if (_options.logr && _options.logr[ __name(l_) ] )
+			//     ...
 		}
     }
 })();
@@ -49,18 +48,18 @@ var cfg_= (function() {
 function subscribe(handler) {
     if (handler.broadcastChannel !== undefined)
         return;
-    LOGR_.log(l_.CXNS, cfg_.prefix +'MsgEnv: subscribe');
+    logr_.log(l_.CONNECTIONS, cfg_.prefix +'MsgEnv: subscribe');
     handler.broadcastChannel= new BroadcastChannel(cfg_.channel);
     handler.broadcastChannel.onmessage= function(event) {
         const msg= event.data;
-        LOGR_.log(l_.REFL, cfg_.prefix +'MsgEnv: bc.onmessage: ', msg);
+        logr_.log(l_.REFLECTION, cfg_.prefix +'MsgEnv: bc.onmessage: ', msg);
         try { this(msg) }
         catch (e) { console.assert(false); }
     }.bind(handler);
 }
 
 function unsubscribe(handler) {
-    LOGR_.log(l_.CXNS, cfg_.prefix +'MsgEnv: unsubscribe');
+    logr_.log(l_.CONNECTIONS, cfg_.prefix +'MsgEnv: unsubscribe');
     handler.broadcastChannel.close();
     delete handler.broadcastChannel;
 }
@@ -72,10 +71,16 @@ function publish(msg) {
     if (! bc_)
         bc_= new BroadcastChannel(cfg_.channel);
 
-    LOGR_.log(l_.REFL, cfg_.prefix +'MsgEnv: bc.postMessage: ', msg);
+    logr_.log(l_.REFLECTION, cfg_.prefix +'MsgEnv: bc.postMessage: ', msg);
     bc_.postMessage(msg);
 }
 
 //-------------------------------------------------------------------------------------------------
 
-export { cfg_ as config, subscribe, unsubscribe, publish, l_ as l };
+export { 
+    cfg_ as config, 
+    subscribe, 
+    unsubscribe, 
+    publish, 
+    l_ as l 
+};
