@@ -1,13 +1,9 @@
 
-import { LOGR } from '@knev/bitlogr';
-
-const l_ = {
-    CONNECTIONS : 0b1 << 1,	// connections
-	REFLECTION : 0b1 << 2,	// reflection
-}
+import { LOGR, l_array } from '@knev/bitlogr';
 
 const LOGR_= LOGR.get_instance();
-const logr_= LOGR_.create({ labels: l_ });
+const logr_= LOGR_.create({ labels: l_array(['CONNECTIONS', 'REFLECTION']) });
+const l_= logr_.l;
 
 // https://stackoverflow.com/questions/4602141/variable-name-as-a-string-in-javascript
 const __name = obj => Object.keys(obj)[0];
