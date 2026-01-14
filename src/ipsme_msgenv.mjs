@@ -78,5 +78,5 @@ export {
     subscribe, 
     unsubscribe, 
     publish, 
-    l_ as l 
+    logr_ as logr
 };

@@ -292,4 +292,4 @@ function publish(msg) {
     bc_.postMessage(msg);
 }
 
-export { cfg_ as config, l_ as l, publish, subscribe, unsubscribe };
+export { cfg_ as config, logr_ as logr, publish, subscribe, unsubscribe };
