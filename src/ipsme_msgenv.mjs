@@ -1,12 +1,14 @@
 
 import { LOGR, l_array } from '@knev/bitlogr';
 
+//-------------------------------------------------------------------------------------------------
+
 const LOGR_= LOGR.get_instance();
-const logr_= LOGR_.create({ labels: l_array(['CONNECTIONS', 'REFLECTION']) });
+const logr_= LOGR_.create({ name: "MsgEnv-BC", labels: l_array(['CONNECTIONS', 'REFLECTION']) });
 const l_= logr_.l;
 
 // https://stackoverflow.com/questions/4602141/variable-name-as-a-string-in-javascript
-const __name = obj => Object.keys(obj)[0];
+// const __name = obj => Object.keys(obj)[0];
 // console.log('OUT', __name({variableName}) );
 
 //-------------------------------------------------------------------------------------------------
@@ -44,18 +46,18 @@ var cfg_= (function() {
 function subscribe(handler) {
     if (handler.broadcastChannel !== undefined)
         return;
-    logr_.log(l_.CONNECTIONS, cfg_.prefix +'MsgEnv: subscribe');
+    logr_.log(l_.CONNECTIONS, () => [cfg_.prefix +'subscribe']);
     handler.broadcastChannel= new BroadcastChannel(cfg_.channel);
     handler.broadcastChannel.onmessage= function(event) {
         const msg= event.data;
-        logr_.log(l_.REFLECTION, cfg_.prefix +'MsgEnv: bc.onmessage: ', msg);
+        logr_.log(l_.REFLECTION, () => [cfg_.prefix +'bc.onmessage: ', msg]);
         try { this(msg) }
         catch (e) { console.assert(false); }
     }.bind(handler);
 }
 
 function unsubscribe(handler) {
-    logr_.log(l_.CONNECTIONS, cfg_.prefix +'MsgEnv: unsubscribe');
+    logr_.log(l_.CONNECTIONS, () => [cfg_.prefix +'unsubscribe']);
     handler.broadcastChannel.close();
     delete handler.broadcastChannel;
 }
@@ -67,7 +69,7 @@ function publish(msg) {
     if (! bc_)
         bc_= new BroadcastChannel(cfg_.channel);
 
-    logr_.log(l_.REFLECTION, cfg_.prefix +'MsgEnv: bc.postMessage: ', msg);
+    logr_.log(l_.REFLECTION, () => [cfg_.prefix +'bc.postMessage: ', msg]);
     bc_.postMessage(msg);
 }
 
