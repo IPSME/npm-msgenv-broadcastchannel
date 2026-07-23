@@ -1,6 +1,6 @@
 {
   "name": "@ipsme/msgenv-broadcastchannel",
-  "version": "1.1.4",
+  "version": "1.1.7",
   "description": "",
   "main": "dist/ipsme_msgenv.es.mjs",
   "types": "dist/ipsme_msgenv.d.ts",
